@@ -1,0 +1,1913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyHub Pro - Complete Learning Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            padding: 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+            flex: 1;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex: 1;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .user-profile {
+            display: none;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #667eea;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #ff5252;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            color: white;
+            padding: 2rem 1rem;
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .hero p {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .search-container {
+            max-width: 700px;
+            margin: 0 auto;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+            position: relative;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 0.3rem;
+            background: white;
+            padding: 0.3rem;
+            border-radius: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            flex-wrap: wrap;
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 0.7rem 1rem;
+            font-size: 0.9rem;
+            min-width: 200px;
+            border-radius: 30px;
+        }
+
+        .search-bar button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+            font-size: 0.85rem;
+        }
+
+        .search-bar button:hover {
+            background: #5568d3;
+        }
+
+        /* Search Results Dropdown */
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 1rem;
+            right: 1rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-height: 450px;
+            overflow-y: auto;
+            display: none;
+            z-index: 500;
+            margin-top: 0.8rem;
+            animation: slideDown 0.3s ease;
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        .search-result-item {
+            padding: 1.2rem;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-result-item:hover {
+            background: #f0f5ff;
+            padding-left: 1.8rem;
+        }
+
+        .result-info h4 {
+            color: #333;
+            margin-bottom: 0.3rem;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .result-info p {
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        .result-link-btn {
+            background: #667eea;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .result-link-btn:hover {
+            background: #5568d3;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Categories */
+        .categories {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 1.5rem 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .categories h2 {
+            margin-bottom: 1rem;
+            color: #333;
+            font-size: 1.3rem;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .category-btn {
+            padding: 0.7rem 0.5rem;
+            border: 2px solid #667eea;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            color: #667eea;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Subjects Grid */
+        .subjects-section {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: #f9f9f9;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .subjects-section.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .subjects-section h3 {
+            margin-bottom: 1rem;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.8rem;
+        }
+
+        .subject-btn {
+            padding: 0.8rem;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            color: #333;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .subject-btn:hover {
+            border-color: #667eea;
+            background: #f0f5ff;
+            color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            animation: slideIn 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 1rem;
+        }
+
+        .modal-header h2 {
+            color: #333;
+            font-size: 1.5rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover {
+            color: #333;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .form-buttons button {
+            flex: 1;
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .tab-btn {
+            padding: 0.8rem 1.2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #999;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .tab-btn.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Firebase Auth UI */
+        .firebase-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .firebase-btn {
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .firebase-btn:hover {
+            border-color: #667eea;
+            background: #f0f5ff;
+        }
+
+        .firebase-btn.google {
+            border-color: #db4437;
+        }
+
+        .firebase-btn.google:hover {
+            background: #f8f0ee;
+        }
+
+        .firebase-btn.phone {
+            border-color: #4285f4;
+        }
+
+        .firebase-btn.phone:hover {
+            background: #f0f8ff;
+        }
+
+        /* Course Card */
+        .course-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            margin-bottom: 1.5rem;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .course-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+        }
+
+        .course-header h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .course-body {
+            padding: 1.5rem;
+        }
+
+        .course-body p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .course-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: #f9f9f9;
+            border-top: 1px solid #eee;
+        }
+
+        .course-author {
+            font-size: 0.85rem;
+            color: #999;
+        }
+
+        .course-action {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .course-btn {
+            padding: 0.5rem 1rem;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .course-btn:hover {
+            background: #5568d3;
+        }
+
+        .course-btn.delete {
+            background: #ff6b6b;
+        }
+
+        .course-btn.delete:hover {
+            background: #ff5252;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 1.5rem 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        .footer {
+            background: white;
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: 2rem;
+            color: #666;
+            border-top: 1px solid #ddd;
+            font-size: 0.85rem;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #667eea;
+        }
+
+        @media (max-width: 900px) {
+            .container { padding: 0 0.8rem; }
+
+            .hero h1 { font-size: 1.6rem; }
+            .hero p { font-size: 0.95rem; }
+
+            .search-container { max-width: 100%; padding: 0 0.6rem; }
+            .search-bar { padding: 0.4rem; gap: 0.4rem; }
+            .search-bar input { padding: 0.8rem; font-size: 0.95rem; min-width: 120px; }
+            .search-results { left: 0.6rem; right: 0.6rem; max-height: 320px; }
+
+            .category-grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.6rem; }
+            .category-btn { padding: 0.6rem 0.4rem; font-size: 0.82rem; }
+
+            .subjects-section { padding: 1rem; }
+            .subjects-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.6rem; }
+            .subject-btn { padding: 0.7rem; font-size: 0.88rem; }
+
+            .course-card { margin-bottom: 1rem; }
+            .course-header { padding: 1rem; }
+            .course-header h3 { font-size: 1.05rem; }
+            .course-body { padding: 1rem; }
+            .course-body p { font-size: 0.9rem; }
+            .course-footer { flex-direction: column; gap: 0.6rem; align-items: flex-start; padding: 0.8rem 1rem; }
+            .course-action { width: 100%; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+            .course-btn { padding: 0.5rem 0.8rem; font-size: 0.85rem; }
+
+            .modal-content { max-width: 94%; padding: 1.2rem; max-height: 92vh; }
+            .modal-header h2 { font-size: 1.1rem; }
+
+            .tab-nav { gap: 0.3rem; }
+            .tab-btn { padding: 0.6rem 0.8rem; font-size: 0.86rem; }
+
+            .user-avatar { width: 36px; height: 36px; font-size: 0.95rem; }
+            .btn { padding: 0.6rem 0.9rem; font-size: 0.86rem; }
+
+            .admin-stats { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 1.3rem; }
+            .hero p { font-size: 0.9rem; }
+
+            .nav-links { display: none; }
+            .nav-links.active { display: flex; flex-direction: column; gap: 0.6rem; padding: 0.8rem 0; }
+            .menu-toggle { display: block; }
+
+            .search-results { left: 0.4rem; right: 0.4rem; margin-top: 0.6rem; max-height: 260px; }
+
+            .category-grid { grid-template-columns: repeat(2, 1fr); }
+            .subjects-grid { grid-template-columns: 1fr; }
+
+            .course-header { padding: 0.8rem; }
+            .course-body { padding: 0.8rem; }
+            .course-footer { padding: 0.6rem 0.8rem; }
+
+            .thumbnailPreview img,
+            #thumbnailPreview img { max-width: 100px; }
+
+            .modal-content { padding: 0.9rem; }
+            .form-group input, .form-group textarea, .form-group select { padding: 0.7rem; }
+
+            /* make search & buttons full width on very small screens */
+            .search-bar { flex-direction: column; gap: 0.5rem; }
+            .search-bar input { width: 100%; }
+            .search-bar button { width: 100%; padding: 0.7rem; }
+
+            .course-card { border-radius: 10px; }
+        }
+
+        /* small improvement: ensure video/img previews scale nicely */
+        #videoPreview video, #mediaBody video, #mediaBody img, .course-card img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* increase tappable area for touch devices */
+        .category-btn, .subject-btn, .course-btn, .tab-btn, .btn {
+            touch-action: manipulation;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="#" class="logo">📚 StudyHub Pro</a>
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#" onclick="showDashboard()">Dashboard</a></li>
+            <li><a href="#" onclick="showCourses()">Courses</a></li>
+            <li><a href="#" onclick="showAdmin()">Admin</a></li>
+        </ul>
+        <div class="auth-buttons">
+            <div class="user-profile" id="userProfile">
+                <span id="userName" style="color: #333; font-weight: 600;"></span>
+                <div class="user-avatar" onclick="toggleUserMenu && toggleUserMenu()" id="userAvatar">U</div>
+                <button class="btn btn-secondary" id="profileBtn" style="display:none; margin-right:0.5rem;" onclick="openProfileModal()">Profile</button>
+                <button class="btn btn-danger" onclick="logout()">Logout</button>
+            </div>
+            <div id="authButtons">
+                <button class="btn btn-secondary" onclick="openLoginModal()">Login</button>
+                <button class="btn btn-primary" onclick="openSignupModal()">Sign Up</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero" id="heroSection">
+            <h1>Welcome to StudyHub Pro 🚀</h1>
+            <p>Your Complete Learning & Teaching Platform</p>
+            <div class="search-container">
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="🔍 Search courses, subjects..." onkeyup="handleSearchInput(event)">
+                    <button onclick="performSearch()">Search</button>
+                </div>
+                <div class="search-results" id="searchResults"></div>
+            </div>
+        </div>
+
+        <!-- Success Message -->
+        <div class="success-message" id="successMessage"></div>
+
+        <!-- Dashboard Section (Hidden by default) -->
+        <div id="dashboardSection" style="display: none;">
+            <div class="categories">
+                <h2>📂 Select Your Class & Learn</h2>
+                <div class="category-grid">
+                    <button class="category-btn active" onclick="showSubjects(this, 'class9')">📚 Class 9</button>
+                    <button class="category-btn" onclick="showSubjects(this, 'class10')">📚 Class 10</button>
+                    <button class="category-btn" onclick="showSubjects(this, 'class11')">📚 Class 11</button>
+                    <button class="category-btn" onclick="showSubjects(this, 'class12')">📚 Class 12</button>
+                    <button class="category-btn" onclick="showSubjects(this, 'Balen entrance')">🎯Balen Entrance</button>
+                    <button class="category-btn" onclick="showSubjects(this, 'IOE / CEE entrance')">🎯IOE / CEE Entrance</button>
+                    <button class="category-btn" onclick="showSubjects(this, 'coding')">💻 Coding</button>
+                    <button class="category-btn" onclick="showSubjects(this, 'languages')">🌍 Languages</button>
+                    <button class="category-btn" onclick="showSubjects(this, 'games')">🎮 Games</button>
+                    
+
+
+                </div>
+
+                <div class="subjects-section active" id="subjectsContainer">
+                    <h3 id="subjectsTitle">Class 9 Subjects</h3>
+                    <div class="subjects-grid" id="subjectsGrid"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Courses Section -->
+        <div id="coursesSection" style="display: none;">
+            <div class="categories">
+                <h2>📖 Available Courses</h2>
+                <button class="btn btn-primary" onclick="openUploadModal()" style="margin-bottom: 1.5rem;">➕ Upload Course</button>
+                <div id="coursesList"></div>
+            </div>
+        </div>
+
+        <!-- Admin Panel Section -->
+        <div id="adminSection" style="display: none;">
+            <div class="admin-panel">
+                <div class="admin-header">
+                    <h2>🛠️ Admin Dashboard</h2>
+                    <button class="btn btn-primary" onclick="openUploadModal()">➕ Add Course</button>
+                </div>
+
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalUsers">0</div>
+                        <div class="stat-label">Total Users</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalCourses">0</div>
+                        <div class="stat-label">Total Courses</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalEnrollments">0</div>
+                        <div class="stat-label">Enrollments</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalRevenue">$0</div>
+                        <div class="stat-label">Revenue</div>
+                    </div>
+                </div>
+
+                <h3 style="margin-bottom: 1rem; color: #333;">📊 Manage Courses</h3>
+                <div id="adminCoursesList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2026 StudyHub Pro | Next Level Learning Platform</p>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🔐 Login to StudyHub</h2>
+                <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
+            </div>
+
+            <div class="tab-nav">
+                <button class="tab-btn active" onclick="switchTab('emailLogin')">Email</button>
+                <button class="tab-btn" onclick="switchTab('socialLogin')">Social</button>
+            </div>
+
+            <div id="emailLogin" class="tab-content active">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password">
+                </div>
+                <button class="btn btn-primary" style="width: 100%;" onclick="handleEmailLogin()">Login</button>
+            </div>
+
+            <div id="socialLogin" class="tab-content">
+                <div class="firebase-buttons">
+                    <button class="firebase-btn google" onclick="loginWithGoogle()">
+                        🔵 Login with Google
+                    </button>
+                    <button class="firebase-btn phone" onclick="loginWithPhone()">
+                        📱 Login with Phone
+                    </button>
+                </div>
+            </div>
+
+            <p style="text-align: center; margin-top: 1.5rem; color: #999; font-size: 0.85rem;">
+                Don't have an account? <a href="#" onclick="switchModals('loginModal', 'signupModal')" style="color: #667eea; cursor: pointer; font-weight: 600;">Sign up</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="modal" id="signupModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✨ Create Account</h2>
+                <button class="modal-close" onclick="closeModal('signupModal')">✕</button>
+            </div>
+
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="signupName" placeholder="Enter your name">
+            </div>
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="signupEmail" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="signupPassword" placeholder="Create a password">
+            </div>
+            <div class="form-group">
+                <label>Account Type</label>
+                <select id="accountType">
+                    <option value="student">Student</option>
+                    <option value="teacher">Teacher</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;" onclick="handleSignup()">Create Account</button>
+
+            <p style="text-align: center; color: #999; font-size: 0.85rem;">
+                Already have an account? <a href="#" onclick="switchModals('signupModal', 'loginModal')" style="color: #667eea; cursor: pointer; font-weight: 600;">Login</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Course Upload Modal -->
+    <div class="modal" id="uploadModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📤 Upload Course</h2>
+                <button class="modal-close" onclick="closeModal('uploadModal')">✕</button>
+            </div>
+
+            <p style="color:#666; margin-bottom:1rem; line-height:1.4;">
+                Publish a course: fill title & description, choose category, set price or upload assets (thumbnail, PDF notes, video).
+                Files are saved in browser storage as data URLs (suitable for demo). Large files may fill localStorage.
+            </p>
+
+            <div class="form-group">
+                <label>Course Title</label>
+                <input type="text" id="courseTitle" placeholder="e.g., Algebra Essentials" required>
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="courseDesc" placeholder="Describe what students will learn" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Category</label>
+                <select id="courseCategory">
+                    <option>Class 9</option>
+                    <option>Class 10</option>
+                    <option>Class 11</option>
+                    <option>Class 12</option>
+                    <option>Balen Entrance</option>
+                    <option>CEE / IOE Entrance</option>
+                    <option>Coding</option>
+                    <option>Languages</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Price ($)</label>
+                <input type="number" id="coursePrice" placeholder="0 for free" min="0">
+            </div>
+
+            <div class="form-group">
+                <label>Thumbnail (image)</label>
+                <input type="file" id="courseThumbnail" accept="image/*" onchange="previewThumbnail(event)">
+                <div id="thumbnailPreview" style="margin-top:0.6rem;"></div>
+            </div>
+
+            <div class="form-group">
+                <label>PDF Notes (optional)</label>
+                <input type="file" id="coursePdf" accept="application/pdf" onchange="showSelectedFileName('coursePdf','pdfName')">
+                <div id="pdfName" style="color:#666; margin-top:0.4rem;"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Video (optional)</label>
+                <input type="file" id="courseVideo" accept="video/*" onchange="previewVideo(event)">
+                <div id="videoPreview" style="margin-top:0.6rem;"></div>
+                <small style="color:#777; display:block; margin-top:0.3rem;">Large videos may not persist in localStorage—use links for large files.</small>
+            </div>
+
+            <div class="form-buttons">
+                <button class="btn btn-primary" onclick="uploadCourse()">Upload Course</button>
+                <button class="btn btn-secondary" onclick="closeModal('uploadModal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Media Modal (NEW) -->
+    <div class="modal" id="mediaModal">
+        <div class="modal-content" style="max-width:800px;">
+            <div class="modal-header">
+                <h2 id="mediaTitle">Media</h2>
+                <button class="modal-close" onclick="closeModal('mediaModal')">✕</button>
+            </div>
+
+            <div id="mediaBody" style="text-align:center; margin-top:0.5rem;"></div>
+
+            <div style="display:flex; gap:0.5rem; margin-top:1rem; align-items:center;">
+                <button class="btn btn-primary" id="likeBtn" onclick="toggleLike(currentMediaCourseId)">👍 Like <span id="likeCount">0</span></button>
+                <button class="btn btn-secondary" onclick="downloadMedia()">⬇️ Download</button>
+                <div style="margin-left:auto; color:#666;" id="commentCount">0 comments</div>
+            </div>
+
+            <div style="margin-top:1rem;">
+                <div id="commentsList" style="max-height:220px; overflow:auto; margin-bottom:0.6rem;"></div>
+                <div style="display:flex; gap:0.5rem;">
+                    <input type="text" id="commentInput" placeholder="Write a comment..." style="flex:1; padding:0.6rem; border-radius:8px; border:1px solid #ddd;">
+                    <button class="btn btn-primary" onclick="postComment()">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal (Admin / User) -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>👤 My Profile</h2>
+                <button class="modal-close" onclick="closeModal('profileModal')">✕</button>
+            </div>
+
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="profileName" placeholder="Your name">
+            </div>
+            <div class="form-group">
+                <label>Email (cannot change)</label>
+                <input type="email" id="profileEmail" readonly>
+            </div>
+            <div class="form-group">
+                <label>Account Type</label>
+                <input type="text" id="profileAccountType" readonly>
+            </div>
+            <div class="form-group">
+                <label>Change Password (optional)</label>
+                <input type="password" id="profilePassword" placeholder="Enter new password to change">
+            </div>
+
+            <div class="form-buttons">
+                <button class="btn btn-primary" onclick="saveProfile()">Save Changes</button>
+                <button class="btn btn-secondary" onclick="closeModal('profileModal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Local Storage Database (In production, use Firebase Firestore)
+        const db = {
+            users: [],
+            courses: [],
+            enrollments: []
+        };
+
+        // Load data from localStorage
+        function loadData() {
+            const stored = localStorage.getItem('studyhubDB');
+            if (stored) {
+                Object.assign(db, JSON.parse(stored));
+            }
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('studyhubDB', JSON.stringify(db));
+        }
+
+        // Current logged-in user
+        let currentUser = null;
+
+        // Load user from session
+        function loadUser() {
+            const stored = sessionStorage.getItem('currentUser');
+            if (stored) {
+                currentUser = JSON.parse(stored);
+                updateAuthUI();
+            }
+        }
+
+        // Subject data
+        const subjects = {
+            class9: {
+                title: 'Class 9 Subjects (Nepal Board)',
+                items: [
+                    { name: '📘 Nepali', searchUrl: 'https://www.google.com/search?q=Class+9+Nepali+Nepal+board' },
+                    { name: '📕 English', searchUrl: 'https://www.google.com/search?q=Class+9+English+Nepal+board' },
+                    { name: '🧮 Compulsory Mathematics', searchUrl: 'https://www.google.com/search?q=Class+9+Compulsory+Mathematics+Nepal+board' },
+                    { name: '🧮 Optional Mathematics', searchUrl: 'https://www.google.com/search?q=Class+9+Optional+Mathematics+Nepal+board' },
+                    { name: '🧪 Science & Technology', searchUrl: 'https://www.google.com/search?q=Class+9+Science+Nepal+board' },
+                    { name: '🌍 Social Studies', searchUrl: 'https://www.google.com/search?q=Class+9+Social+Studies+Nepal+board' },
+                    { name: '💻 Computer Science', searchUrl: 'https://www.google.com/search?q=Class+9+Computer+Science+Nepal+board' },
+                    { name: '📖 Vedic Studies', searchUrl: 'https://www.google.com/search?q=Class+9+Vedic+Studies+Nepal+board' },
+                    { name: '⚽ Physical Education', searchUrl: 'https://www.google.com/search?q=Class+9+Physical+Education+Nepal+board' }
+                ]
+            },
+            class10: {
+                title: 'Class 10 Subjects (Nepal Board)',
+                items: [
+                    { name: '📘 Nepali', searchUrl: 'https://www.google.com/search?q=Class+10+Nepali+SLC+Nepal' },
+                    { name: '📕 English', searchUrl: 'https://www.google.com/search?q=Class+10+English+SLC+Nepal' },
+                    { name: '🧮 Mathematics', searchUrl: 'https://www.google.com/search?q=Class+10+Compulsory+Mathematics+SLC+Nepal' },
+                    { name: '🧪 Science & Technology', searchUrl: 'https://www.google.com/search?q=Class+10+Science+SLC+Nepal' },
+                    { name: '🧮 Optional Mathematics', searchUrl: 'https://www.google.com/search?q=Class+10+Optional+Mathematics+SLC+Nepal' },
+                    { name: '🌍 Social Studies', searchUrl: 'https://www.google.com/search?q=Class+10+Social+Studies+SLC+Nepal' },
+                    { name: '💻 Computer Science', searchUrl: 'https://www.google.com/search?q=Class+10+Computer+Science+SLC+Nepal' },
+                    { name: '📖 Vedic Studies', searchUrl: 'https://www.google.com/search?q=Class+10+Vedic+Studies+SLC+Nepal' },
+                    { name: '⚽ Physical Education', searchUrl: 'https://www.google.com/search?q=Class+10+Physical+Education+SLC+Nepal' }
+                ]
+            },
+            class11: {
+                title: 'Class 11 Subjects (NEB)',
+                items: [
+                    { name: '📘 Nepali (Compulsory)', searchUrl: 'https://www.google.com/search?q=Class+11+Nepali+NEB' },
+                    { name: '📕 English (Compulsory)', searchUrl: 'https://www.google.com/search?q=Class+11+English+NEB' },
+                    { name: '🔬 Physics', searchUrl: 'https://www.google.com/search?q=Class+11+Physics+NEB' },
+                    { name: '🧬 Chemistry', searchUrl: 'https://www.google.com/search?q=Class+11+Chemistry+NEB' },
+                    { name: '🧮 Mathematics', searchUrl: 'https://www.google.com/search?q=Class+11+Mathematics+NEB' },
+                    { name: '🦠 Biology', searchUrl: 'https://www.google.com/search?q=Class+11+Biology+NEB' },
+                    { name: '💻 Computer Science (Optional)', searchUrl: 'https://www.google.com/search?q=Class+11+Computer+Science+NEB' },
+                    { name: '📊 Economics', searchUrl: 'https://www.google.com/search?q=Class+11+Economics+NEB' },
+                    { name: '📈 Accountancy', searchUrl: 'https://www.google.com/search?q=Class+11+Accountancy+NEB' },
+                    { name: '🌍 Geography', searchUrl: 'https://www.google.com/search?q=Class+11+Geography+NEB' },
+                    { name: '📚 Sociology', searchUrl: 'https://www.google.com/search?q=Class+11+Sociology+NEB' },
+                    { name: '🧠 Psychology', searchUrl: 'https://www.google.com/search?q=Class+11+Psychology+NEB' }
+                ]
+            },
+            class12: {
+                title: 'Class 12 Subjects (NEB)',
+                items: [
+                    { name: '📘 Nepali (Compulsory)', searchUrl: 'https://www.google.com/search?q=Class+12+Nepali+NEB' },
+                    { name: '📕 English (Compulsory)', searchUrl: 'https://www.google.com/search?q=Class+12+English+NEB' },
+                    { name: '🔬 Physics', searchUrl: 'https://www.google.com/search?q=Class+12+Physics+NEB' },
+                    { name: '🧬 Chemistry', searchUrl: 'https://www.google.com/search?q=Class+12+Chemistry+NEB' },
+                    { name: '🧮 Mathematics', searchUrl: 'https://www.google.com/search?q=Class+12+Mathematics+NEB' },
+                    { name: '🦠 Biology', searchUrl: 'https://www.google.com/search?q=Class+12+Biology+NEB' },
+                    { name: '💻 Computer Science (Optional)', searchUrl: 'https://www.google.com/search?q=Class+12+Computer+Science+NEB' },
+                    { name: '📊 Economics', searchUrl: 'https://www.google.com/search?q=Class+12+Economics+NEB' },
+                    { name: '📈 Accountancy', searchUrl: 'https://www.google.com/search?q=Class+12+Accountancy+NEB' },
+                    { name: '🌍 Geography', searchUrl: 'https://www.google.com/search?q=Class+12+Geography+NEB' },
+                    { name: '📚 Sociology', searchUrl: 'https://www.google.com/search?q=Class+12+Sociology+NEB' },
+                    { name: '🧠 Psychology', searchUrl: 'https://www.google.com/search?q=Class+12+Psychology+NEB' }
+                ]
+            },
+            "Balen entrance": {
+                title: 'Balen Entrance Subjects',
+                items: [
+                    { name: '🧮 Mathematics', searchUrl: 'https://www.google.com/search?q=Balen+Entrance+Mathematics' },
+                    { name: '🔬 Physics', searchUrl: 'https://www.google.com/search?q=Balen+Entrance+Physics' },
+                    { name: '🧬 Chemistry', searchUrl: 'https://www.google.com/search?q=Balen+Entrance+Chemistry' },
+                    { name: '🦠 Biology', searchUrl: 'https://www.google.com/search?q=Balen+Entrance+Biology' },
+                    { name: '📕 English', searchUrl: 'https://www.google.com/search?q=Balen+Entrance+English' },
+                    { name: '📝 Reasoning', searchUrl: 'https://www.google.com/search?q=Balen+Entrance+Reasoning' },
+                    { name: '🎯 General Knowledge', searchUrl: 'https://www.google.com/search?q=Balen+Entrance+General+Knowledge' },
+                    { name: '📚 Sociology', searchUrl: 'https://www.google.com/search?q=Balen+Entrance+Sociology' },
+                    { name: '🌍 Geography', searchUrl: 'https://www.google.com/search?q=Balen+Entrance+Geography' },
+                    { name: '🧠 Psychology', searchUrl: 'https://www.google.com/search?q=Balen+Entrance+Psychology' }
+                ]
+            },
+            "IOE / CEE entrance": {
+                title: 'IOE / CEE Entrance Subjects',
+                items: [
+                    { name: '🧮 Mathematics', searchUrl: 'https://www.google.com/search?q=IOE+Entrance+Mathematics+CEE' },
+                    { name: '🔬 Physics', searchUrl: 'https://www.google.com/search?q=IOE+Entrance+Physics+CEE' },
+                    { name: '🧬 Chemistry', searchUrl: 'https://www.google.com/search?q=IOE+Entrance+Chemistry+CEE' },
+                    { name: '🦠 Biology', searchUrl: 'https://www.google.com/search?q=IOE+Entrance+Biology+CEE' },
+                    { name: '📕 English', searchUrl: 'https://www.google.com/search?q=IOE+Entrance+English+CEE' },
+                    { name: '📝 Reasoning', searchUrl: 'https://www.google.com/search?q=IOE+Entrance+Reasoning+CEE' },
+                    { name: '🎯 General Knowledge', searchUrl: 'https://www.google.com/search?q=IOE+Entrance+General+Knowledge+CEE' },
+                    { name: '📚 Sociology', searchUrl: 'https://www.google.com/search?q=IOE+Entrance+Sociology+CEE' },
+                    { name: '🌍 Geography', searchUrl: 'https://www.google.com/search?q=IOE+Entrance+Geography+CEE' },
+                    { name: '🧠 Psychology', searchUrl: 'https://www.google.com/search?q=IOE+Entrance+Psychology+CEE' },
+                    { name: '💻 Computer Science', searchUrl: 'https://www.google.com/search?q=IOE+Entrance+Computer+Science+CEE' }
+                ]
+            },
+            coding: {
+                title: 'Coding Languages',
+                items: [
+                    { name: '🐍 Python', searchUrl: 'https://www.google.com/search?q=Python+programming+free' },
+                    { name: '☕ Java', searchUrl: 'https://www.google.com/search?q=Java+programming+tutorials' },
+                    { name: '🌐 Web Development', searchUrl: 'https://www.google.com/search?q=Web+Development+tutorials' },
+                    { name: '⚛️ React & JavaScript', searchUrl: 'https://www.google.com/search?q=React+JavaScript+tutorials' },
+                    { name: '💾 SQL & Database', searchUrl: 'https://www.google.com/search?q=SQL+database+tutorials' },
+                    { name: '📱 Mobile Development', searchUrl: 'https://www.google.com/search?q=Mobile+app+development' }
+                ]
+            },
+            languages: {
+                title: 'World Languages',
+                items: [
+                    { name: '🇬🇧 English', searchUrl: 'https://www.google.com/search?q=English+language+learning' },
+                    { name: '🇫🇷 French', searchUrl: 'https://www.google.com/search?q=French+language+learning' },
+                    { name: '🇪🇸 Spanish', searchUrl: 'https://www.google.com/search?q=Spanish+language+learning' },
+                    { name: '🇩🇪 German', searchUrl: 'https://www.google.com/search?q=German+language+learning' },
+                    { name: '🇮🇹 Italian', searchUrl: 'https://www.google.com/search?q=Italian+language+learning' },
+                    { name: '🇨🇳 Mandarin Chinese', searchUrl: 'https://www.google.com/search?q=Mandarin+Chinese+learning' },
+                    { name: '🇯🇵 Japanese', searchUrl: 'https://www.google.com/search?q=Japanese+language+learning' },
+                    { name: '🇮🇳 Hindi', searchUrl: 'https://www.google.com/search?q=Hindi+language+learning' }
+                ]
+            },
+            games: {
+                title: 'Educational Games',
+                items: [
+                    { name: '🧠 Brain Training', searchUrl: 'https://www.google.com/search?q=brain+training+games' },
+                    { name: '🔢 Math Quest', searchUrl: 'https://www.google.com/search?q=math+puzzle+games' },
+                    { name: '🌍 Geography Quiz', searchUrl: 'https://www.google.com/search?q=geography+quiz+games' },
+                    { name: '📚 Word Master', searchUrl: 'https://www.google.com/search?q=word+games' },
+                    { name: '🧩 Logic Puzzles', searchUrl: 'https://www.google.com/search?q=logic+puzzle+games' },
+                    { name: '⚗️ Science Lab', searchUrl: 'https://www.google.com/search?q=science+games+virtual+lab' }
+                ]
+            }
+        };
+
+        // Authentication Functions
+        // record a login: store lastLogin, increment loginCount, ensure user stored in db
+        function recordLogin(user) {
+            if (!user) return;
+            // normalize
+            user = Object.assign({}, user);
+            user.lastLogin = new Date().toISOString();
+            // find by id or email
+            const existing = db.users.find(u => (u.id && user.id && u.id === user.id) || (u.email && user.email && u.email === user.email));
+            if (existing) {
+                existing.lastLogin = user.lastLogin;
+                existing.loginCount = (existing.loginCount || 0) + 1;
+                // keep name/accountType up-to-date
+                existing.name = user.name || existing.name;
+                existing.accountType = user.accountType || existing.accountType;
+                existing.provider = user.provider || existing.provider;
+            } else {
+                user.loginCount = 1;
+                db.users.push(user);
+            }
+            saveData();
+            // persist session
+            currentUser = user;
+            sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
+            updateAuthUI();
+        }
+
+        function handleEmailLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email || !password) {
+                alert('❌ Please fill all fields');
+                return;
+            }
+
+            const user = db.users.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                // record login metadata and persist
+                recordLogin(user);
+                closeModal('loginModal');
+                showSuccessMessage('✅ Login successful!');
+                setTimeout(() => showDashboard(), 1000);
+            } else {
+                alert('❌ Invalid email or password');
+            }
+        }
+
+        function handleSignup() {
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const accountType = document.getElementById('accountType').value;
+
+            if (!name || !email || !password) {
+                alert('❌ Please fill all fields');
+                return;
+            }
+
+            if (db.users.find(u => u.email === email)) {
+                alert('❌ Email already exists');
+                return;
+            }
+
+            const newUser = {
+                id: Date.now(),
+                name,
+                email,
+                password,
+                accountType,
+                createdAt: new Date().toISOString()
+            };
+
+            // push to db and record first login
+            db.users.push(newUser);
+            saveData();
+
+            // record login (adds lastLogin + loginCount)
+            recordLogin(newUser);
+
+            closeModal('signupModal');
+            showSuccessMessage('✨ Account created successfully!');
+            setTimeout(() => showDashboard(), 1000);
+        }
+
+        function loginWithGoogle() {
+            alert('🔵 Google Login Demo\n\nIn production, this would use Firebase Authentication.');
+            const demoUser = {
+                id: 'google_' + Date.now(),
+                name: 'Google User',
+                email: 'user@gmail.com',
+                accountType: 'student',
+                provider: 'google'
+            };
+            // record/persist demo user and login
+            recordLogin(demoUser);
+            closeModal('loginModal');
+            showSuccessMessage('✅ Logged in with Google!');
+        }
+
+        function loginWithPhone() {
+            alert('📱 Phone Login Demo\n\nIn production, this would use Firebase Phone Authentication.');
+            const demoUser = {
+                id: 'phone_' + Date.now(),
+                name: 'Phone User',
+                email: 'phone@studyhub.com',
+                accountType: 'student',
+                provider: 'phone'
+            };
+            recordLogin(demoUser);
+            closeModal('loginModal');
+            showSuccessMessage('✅ Logged in with Phone!');
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                currentUser = null;
+                sessionStorage.removeItem('currentUser');
+                updateAuthUI();
+                showSuccessMessage('👋 Logged out successfully');
+                setTimeout(() => location.reload(), 1000);
+            }
+        }
+
+        function updateAuthUI() {
+            const authButtons = document.getElementById('authButtons');
+            const userProfile = document.getElementById('userProfile');
+            const profileBtn = document.getElementById('profileBtn');
+
+            if (currentUser) {
+                authButtons.style.display = 'none';
+                userProfile.style.display = 'flex';
+                document.getElementById('userName').textContent = currentUser.name;
+                document.getElementById('userAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
+                // show profile button for admin (and allow for other users if desired)
+                if (profileBtn) profileBtn.style.display = 'inline-block';
+            } else {
+                authButtons.style.display = 'flex';
+                userProfile.style.display = 'none';
+                if (profileBtn) profileBtn.style.display = 'none';
+            }
+        }
+
+        // Open profile modal and populate with currentUser data
+        function openProfileModal() {
+            if (!currentUser) {
+                alert('❌ Please login first');
+                return;
+            }
+            document.getElementById('profileName').value = currentUser.name || '';
+            document.getElementById('profileEmail').value = currentUser.email || '';
+            document.getElementById('profileAccountType').value = currentUser.accountType || '';
+            document.getElementById('profilePassword').value = '';
+            document.getElementById('profileModal').classList.add('active');
+        }
+
+        // Save profile changes (updates db and session)
+        function saveProfile() {
+            if (!currentUser) return;
+            const name = document.getElementById('profileName').value.trim();
+            const newPassword = document.getElementById('profilePassword').value;
+
+            if (!name) { alert('❌ Name cannot be empty'); return; }
+
+            // update currentUser and db.users entry
+            currentUser.name = name;
+            if (newPassword) currentUser.password = newPassword;
+
+            // find user in db by id or email and update
+            const userIndex = db.users.findIndex(u => (u.id && currentUser.id && u.id === currentUser.id) || (u.email && currentUser.email && u.email === currentUser.email));
+            if (userIndex !== -1) {
+                db.users[userIndex].name = currentUser.name;
+                if (newPassword) db.users[userIndex].password = newPassword;
+            } else {
+                // if not found, push (safeguard)
+                db.users.push(Object.assign({}, currentUser));
+            }
+
+            saveData();
+            sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
+            updateAuthUI();
+            showSuccessMessage('✅ Profile updated');
+            closeModal('profileModal');
+        }
+
+        // Course Functions
+        // helper: convert File -> dataURL
+        function fileToDataUrl(file) {
+            return new Promise((resolve, reject) => {
+                if (!file) return resolve('');
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = () => reject(new Error('File read error'));
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function previewThumbnail(event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('thumbnailPreview');
+            preview.innerHTML = '';
+            if (!file) return;
+            const img = document.createElement('img');
+            img.style.maxWidth = '120px';
+            img.style.borderRadius = '8px';
+            img.style.boxShadow = '0 4px 10px rgba(0,0,0,0.1)';
+            const reader = new FileReader();
+            reader.onload = e => img.src = e.target.result;
+            reader.readAsDataURL(file);
+            preview.appendChild(img);
+        }
+
+        function previewVideo(event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('videoPreview');
+            preview.innerHTML = '';
+            if (!file) return;
+            const video = document.createElement('video');
+            video.controls = true;
+            video.style.maxWidth = '260px';
+            const reader = new FileReader();
+            reader.onload = e => video.src = e.target.result;
+            reader.readAsDataURL(file);
+            preview.appendChild(video);
+        }
+
+        function showSelectedFileName(inputId, targetId) {
+            const f = document.getElementById(inputId).files[0];
+            document.getElementById(targetId).textContent = f ? f.name : '';
+        }
+
+        // make uploadCourse async to handle file reading
+        async function uploadCourse() {
+            if (!currentUser) {
+                alert('❌ Please login first');
+                return;
+            }
+
+            const title = document.getElementById('courseTitle').value.trim();
+            const desc = document.getElementById('courseDesc').value.trim();
+            const category = document.getElementById('courseCategory').value;
+            const price = document.getElementById('coursePrice').value || 0;
+
+            if (!title || !desc) {
+                alert('❌ Please fill required fields (title, description)');
+                return;
+            }
+
+            // files
+            const thumbFile = document.getElementById('courseThumbnail').files[0];
+            const pdfFile = document.getElementById('coursePdf').files[0];
+            const videoFile = document.getElementById('courseVideo').files[0];
+
+            // read as data URLs (may be large)
+            let thumbnailData = '';
+            let pdfData = '';
+            let videoData = '';
+            try {
+                if (thumbFile) thumbnailData = await fileToDataUrl(thumbFile);
+                if (pdfFile) pdfData = await fileToDataUrl(pdfFile);
+                if (videoFile) videoData = await fileToDataUrl(videoFile);
+            } catch (err) {
+                alert('❌ Error reading files. Try smaller files.');
+                return;
+            }
+
+            const newCourse = {
+                id: Date.now(),
+                title,
+                description: desc,
+                category,
+                price: parseFloat(price),
+                link: '', // keep for legacy links
+                thumbnail: thumbnailData, // data URL
+                pdfUrl: pdfData, // data URL
+                videoUrl: videoData, // data URL
+                instructor: currentUser.name,
+                instructorId: currentUser.id,
+                createdAt: new Date().toISOString(),
+                students: 0,
+                rating: 0,
+                // NEW: social fields
+                likes: 0,
+                likedBy: [],
+                comments: []
+            };
+
+            db.courses.push(newCourse);
+            saveData();
+
+            showSuccessMessage('✅ Course uploaded successfully!');
+            closeModal('uploadModal');
+
+            // clear fields + previews
+            document.getElementById('courseTitle').value = '';
+            document.getElementById('courseDesc').value = '';
+            document.getElementById('coursePrice').value = '';
+            document.getElementById('courseCategory').selectedIndex = 0;
+            document.getElementById('courseThumbnail').value = '';
+            document.getElementById('coursePdf').value = '';
+            document.getElementById('courseVideo').value = '';
+            document.getElementById('thumbnailPreview').innerHTML = '';
+            document.getElementById('videoPreview').innerHTML = '';
+            document.getElementById('pdfName').textContent = '';
+
+            // show courses so uploader sees it
+            showCourses();
+        }
+
+        // update loadCourses to display thumbnail/pdf/video and social actions
+        function loadCourses() {
+            const coursesList = document.getElementById('coursesList');
+            const adminCoursesList = document.getElementById('adminCoursesList');
+
+            let coursesHTML = '';
+            let adminHTML = '';
+
+            db.courses.forEach(course => {
+                const isOwner = currentUser && String(currentUser.id) === String(course.instructorId);
+                const thumbSection = course.thumbnail ? `<div style="height:160px;background:url('${course.thumbnail}') center/cover no-repeat; cursor: pointer;" onclick="openMediaForCourse('${course.thumbnail}','image', ${course.id})"></div>` : '';
+                const pdfButton = course.pdfUrl ? `<a class="course-btn" href="${course.pdfUrl}" download="${course.title}-notes.pdf">📥 PDF</a>` : '';
+                const videoSection = course.videoUrl ? `<button class="course-btn" onclick="openMediaForCourse('${course.videoUrl}', 'video', ${course.id})">▶️ Play</button>` : '';
+                const viewLink = course.link ? `<button class="course-btn" onclick="window.open('${course.link}','_blank')">📖 View Course</button>` : '';
+
+                const commentCount = course.comments ? course.comments.length : 0;
+                const courseCard = `
+                    <div class="course-card">
+                        ${thumbSection}
+                        <div class="course-header">
+                            <h3>${course.title}</h3>
+                            <p style="opacity: 0.9; font-size: 0.85rem;">📚 ${course.category}</p>
+                        </div>
+                        <div class="course-body">
+                            <p>${course.description}</p>
+                            <p style="color: #667eea; font-weight: 600;">
+                                👨‍🏫 By ${course.instructor} | 💵 $${course.price}
+                            </p>
+                        </div>
+                        <div class="course-footer">
+                            <div class="course-author">
+                                👥 ${course.students} students • ❤️ ${course.likes || 0} • 💬 ${commentCount}
+                            </div>
+                            <div class="course-action">
+                                ${viewLink}
+                                ${pdfButton}
+                                ${videoSection}
+                                ${isOwner ? `<button class="course-btn delete" onclick="deleteCourse(${course.id})">🗑️ Delete</button>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                coursesHTML += courseCard;
+
+                if (currentUser && currentUser.accountType === 'admin') {
+                    adminHTML += courseCard;
+                }
+            });
+
+            coursesList.innerHTML = coursesHTML || '<p style="color: #999; text-align: center; padding: 2rem;">No courses available yet</p>';
+            adminCoursesList.innerHTML = adminHTML || '<p style="color: #999; text-align: center; padding: 2rem;">No courses</p>';
+
+            updateAdminStats();
+        }
+
+        // NEW: media handling with like/comment/download
+        let currentMediaCourseId = null;
+        let currentMediaDownloadUrl = '';
+
+        function openMediaForCourse(dataUrl, type, courseId) {
+            const course = db.courses.find(c => c.id === courseId);
+            if (!course) return;
+            currentMediaCourseId = courseId;
+            currentMediaDownloadUrl = dataUrl || '';
+
+            document.getElementById('mediaTitle').textContent = course.title;
+            const body = document.getElementById('mediaBody');
+            body.innerHTML = '';
+            if (type === 'video') {
+                body.innerHTML = `<video src="${dataUrl}" controls style="width:100%; height:auto; max-height:480px;"></video>`;
+            } else {
+                body.innerHTML = `<img src="${dataUrl}" alt="${course.title}" style="max-width:100%; height:auto; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,0.1);">`;
+            }
+
+            document.getElementById('likeCount').textContent = course.likes || 0;
+            document.getElementById('commentCount').textContent = (course.comments ? course.comments.length : 0) + ' comments';
+            renderCommentsList(course.comments || []);
+            document.getElementById('commentInput').value = '';
+
+            document.getElementById('mediaModal').classList.add('active');
+        }
+
+        function toggleLike(courseId) {
+            if (!currentUser) { alert('❌ Please login to like'); return; }
+            const course = db.courses.find(c => c.id === courseId);
+            if (!course) return;
+            const uid = String(currentUser.id);
+            course.likedBy = course.likedBy || [];
+            if (course.likedBy.includes(uid)) {
+                course.likedBy = course.likedBy.filter(id => id !== uid);
+            } else {
+                course.likedBy.push(uid);
+            }
+            course.likes = course.likedBy.length;
+            saveData();
+            document.getElementById('likeCount').textContent = course.likes;
+            loadCourses();
+        }
+
+        function postComment() {
+            if (!currentUser) { alert('❌ Please login to comment'); return; }
+            const text = document.getElementById('commentInput').value.trim();
+            if (!text) return;
+            const course = db.courses.find(c => c.id === currentMediaCourseId);
+            if (!course) return;
+            course.comments = course.comments || [];
+            course.comments.unshift({
+                id: Date.now(),
+                userId: currentUser.id,
+                userName: currentUser.name,
+                text,
+                createdAt: new Date().toISOString()
+            });
+            saveData();
+            document.getElementById('commentInput').value = '';
+            renderCommentsList(course.comments);
+            document.getElementById('commentCount').textContent = course.comments.length + ' comments';
+            loadCourses();
+        }
+
+        function renderCommentsList(comments) {
+            const el = document.getElementById('commentsList');
+            if (!comments || comments.length === 0) {
+                el.innerHTML = '<div style="color:#777;">No comments yet</div>';
+                return;
+            }
+            el.innerHTML = comments.map(c => `
+                <div style="padding:0.6rem; border-bottom:1px solid #eee;">
+                    <strong style="font-size:0.95rem;">${c.userName}</strong>
+                    <div style="color:#666; font-size:0.8rem;">${new Date(c.createdAt).toLocaleString()}</div>
+                    <div style="margin-top:0.4rem;">${escapeHtml(c.text)}</div>
+                </div>
+            `).join('');
+        }
+
+        function downloadMedia() {
+            if (!currentMediaDownloadUrl) { alert('No media to download'); return; }
+            const course = db.courses.find(c => c.id === currentMediaCourseId);
+            const filenameBase = course ? course.title.replace(/\s+/g,'_') : 'media';
+            downloadDataUrl(currentMediaDownloadUrl, filenameBase);
+        }
+
+        function downloadDataUrl(dataUrl, filename) {
+            const a = document.createElement('a');
+            a.href = dataUrl;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        // Navigation Functions
+        function showDashboard() {
+            if (!currentUser) {
+                alert('❌ Please login first');
+                return;
+            }
+            document.getElementById('heroSection').style.display = 'none';
+            document.getElementById('dashboardSection').style.display = 'block';
+            document.getElementById('coursesSection').style.display = 'none';
+            document.getElementById('adminSection').style.display = 'none';
+            showSubjects(document.querySelector('.category-btn'), 'class9');
+        }
+
+        function showCourses() {
+            if (!currentUser) {
+                alert('❌ Please login first');
+                return;
+            }
+            document.getElementById('heroSection').style.display = 'none';
+            document.getElementById('dashboardSection').style.display = 'none';
+            document.getElementById('coursesSection').style.display = 'block';
+            document.getElementById('adminSection').style.display = 'none';
+            loadCourses();
+        }
+
+        function showAdmin() {
+            if (!currentUser || currentUser.accountType !== 'admin') {
+                alert('❌ Admin access only');
+                return;
+            }
+            document.getElementById('heroSection').style.display = 'none';
+            document.getElementById('dashboardSection').style.display = 'none';
+            document.getElementById('coursesSection').style.display = 'none';
+            document.getElementById('adminSection').style.display = 'block';
+            loadCourses();
+        }
+
+        // Subject Functions
+        function showSubjects(btn, category) {
+            if (btn) {
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+
+            const categoryData = subjects[category];
+            document.getElementById('subjectsTitle').textContent = categoryData.title;
+
+            const subjectsGrid = document.getElementById('subjectsGrid');
+            subjectsGrid.innerHTML = categoryData.items.map(item => 
+                `<button class="subject-btn" onclick="window.open('${item.searchUrl}', '_blank')">${item.name}</button>`
+            ).join('');
+        }
+
+        // Search Functions
+        function handleSearchInput(event) {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            if (query.length === 0) {
+                document.getElementById('searchResults').classList.remove('active');
+                return;
+            }
+
+            let results = [];
+            for (const category in subjects) {
+                subjects[category].items.forEach(item => {
+                    if (item.name.toLowerCase().includes(query)) {
+                        results.push({
+                            name: item.name,
+                            category: subjects[category].title,
+                            url: item.searchUrl
+                        });
+                    }
+                });
+            }
+
+            displaySearchResults(results);
+        }
+
+        function displaySearchResults(results) {
+            const resultsDiv = document.getElementById('searchResults');
+            if (results.length === 0) {
+                resultsDiv.innerHTML = '<div style="padding: 1rem; text-align: center; color: #999;">No results found</div>';
+            } else {
+                resultsDiv.innerHTML = results.map(result => `
+                    <div class="search-result-item">
+                        <div class="result-info">
+                            <h4>${result.name}</h4>
+                            <p>${result.category}</p>
+                        </div>
+                        <button class="result-link-btn" onclick="window.open('${result.url}', '_blank')">Search</button>
+                    </div>
+                `).join('');
+            }
+            resultsDiv.classList.add('active');
+        }
+
+        function performSearch() {
+            handleSearchInput();
+        }
+
+        // Modal Functions
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.add('active');
+
+
+        }
+
+        function openSignupModal() {
+            document.getElementById('signupModal').classList.add('active');
+        }
+        function openUploadModal() {
+            if (!currentUser) {
+                alert('❌ Please login first');
+                return;
+            }
+            // clear previous inputs/previews
+            setTimeout(() => {
+                const thumb = document.getElementById('thumbnailPreview');
+                if (thumb) thumb.innerHTML = '';
+                const vid = document.getElementById('videoPreview');
+                if (vid) vid.innerHTML = '';
+                const pdfName = document.getElementById('pdfName');
+                if (pdfName) pdfName.textContent = '';
+                const fileInputs = ['courseThumbnail','coursePdf','courseVideo'];
+                fileInputs.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.value = '';
+                });
+            }, 0);
+            document.getElementById('uploadModal').classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function switchModals(closeId, openId) {
+            closeModal(closeId);
+            setTimeout(() => openLoginModal(openId), 300);
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function showSuccessMessage(message) {
+            const msg = document.getElementById('successMessage');
+            msg.textContent = message;
+            msg.classList.add('active');
+            setTimeout(() => msg.classList.remove('active'), 3000);
+        }
+
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        // Close modals on outside click
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        }
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            loadUser();
+        });
+    </script>
+</body>
+</html>
